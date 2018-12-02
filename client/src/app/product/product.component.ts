@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ProductsService } from '../products.service';
+import { Product } from '../products.service';
+import {NgForm} from '@angular/forms';
 
 /**
  * Defines the component responsible to manage the product page.
@@ -15,13 +18,28 @@ export class ProductComponent implements OnInit {
    *
    * @param route                   The active route.
    */
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+  private route: ActivatedRoute,
+  private productService: ProductsService) { }
+
+  product: Product; 
+  displayDialog: boolean;
 
   /**
    * Occurs when the component is initialized.
    */
   ngOnInit() {
     const productId = this.route.snapshot.paramMap.get('id');
-    // TODO: Compléter la logique pour afficher le produit associé à l'identifiant spécifié (productId).
+    this.getProduct(productId);
+    this.displayDialog = false;
+  }
+
+  getProduct(productId: string): void {
+    this.productService.getProduct(Number(productId)).then(product => this.product = product);
+  }
+
+  submit= function(f: NgForm){
+  this.displayDialog = true;
+  setTimeout(()=> this.displayDialog = false, 5000);
   }
 }
