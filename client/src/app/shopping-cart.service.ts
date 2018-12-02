@@ -53,8 +53,8 @@ export class ShoppingCartService {
    * @param quantity                The quantity of product to add.
    * @returns {Promise<{}>}    
    */
-  a(productId: number, quantity: number): Promise<{}> {
-    const url = `${Config.apiUrl}/products/${productId}`;
+  addItem(productId: number, quantity: number): Promise<{}> {
+    const url = `${Config.apiUrl}/shopping-cart/`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const options = { headers: headers, withCredentials: true };
     
