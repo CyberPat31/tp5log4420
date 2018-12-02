@@ -11,9 +11,10 @@ export class AppComponent {
 
   // TODO: Modifier le nom des auteurs pour vos noms
   readonly authors = [
-    'Antoine Béland',
-    'Konstantinos Lambrou-Latreille'
+    'Bastien Dubourg',
+    'Patrick Nadeau'
   ];
 
   // TODO: À compléter
+  count = 0;
 }
