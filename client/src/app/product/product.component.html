@@ -12,19 +12,19 @@
       <section>
         <h2>Caractéristiques</h2>
         <ul id="product-features">
-          <li *ngFor="let feature of product.features; index as i">{{product.features[i]}}</li>
+          <li *ngFor="let feature of product.features; index as i" [innerHTML]="product.features[i]"></li>
         </ul>
       </section>
       <hr>
       <form #f="ngForm" (ngSubmit)="submit(f)" class="pull-right" id="add-to-cart-form">
         <label for="product-quantity">Quantité:</label>
-        <input class="form-control" id="product-quantity" name="product-quantity"
+        <input [(ngModel)]="quantity" class="form-control" id="product-quantity" name="product-quantity"
                type="number" value="1" min="1" required>&nbsp;
         <button class="btn" title="Ajouter au panier" type="submit">
           <i class="fa fa-cart-plus"></i>&nbsp; Ajouter
         </button>
       </form>
-      <p>Prix: <strong id="product-price">{{product.price}}&thinsp;$</strong></p>
+      <p>Prix: <strong id="product-price">{{product.price | number:'1.2-2':'fr'}}&thinsp;$</strong></p>
     </div>
   </div>
   <div class="dialog" id="dialog" *ngIf="displayDialog">

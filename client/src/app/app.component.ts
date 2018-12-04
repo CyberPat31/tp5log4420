@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ShoppingCartService } from './shopping-cart.service';
+import { Item } from './shopping-cart.service';
 
 /**
  * Defines the main component of the application.
@@ -8,13 +10,24 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  
+  constructor(
+	private shoppingCartService: ShoppingCartService) { }
 
-  // TODO: Modifier le nom des auteurs pour vos noms
+  items: Item[];
+  count: number;
+
   readonly authors = [
     'Bastien Dubourg',
     'Patrick Nadeau'
   ];
 
-  // TODO: À compléter
-  count = 0;
+  ngOnInit() {
+    this.count = 0;
+    this.getCount();
+  }
+
+  getCount(): void{
+    this.shoppingCartService.getItems().then(items => items.forEach(item => this.count += item.quantity));
+  }
 }
