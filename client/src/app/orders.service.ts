@@ -49,6 +49,8 @@ export class OrdersService {
    */
   getOrder(orderId: number): Promise<Order> {
     const url = `${Config.apiUrl}/orders/${orderId}`;
+	const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const options = { headers: headers, withCredentials: true };
     return this.http.get(url, options)
       .toPromise()
       .then(order => order as Order)
@@ -60,6 +62,8 @@ export class OrdersService {
    */
   addOrder(id: number, firstName: string, lastName: string, email: string, phone: string, products: Product[]): Promise<{}> {
     const url = `${Config.apiUrl}/orders/`;
+	const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const options = { headers: headers, withCredentials: true };
     return this.http.post(url, JSON.stringify({
       id: id,
       firstName: firstName,

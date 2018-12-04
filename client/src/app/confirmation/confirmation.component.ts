@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OrdersService } from '../orders.service';
+import { Order } from '../orders.service';
 
 /**
 * Defines the component responsible to manage the confirmation page.
@@ -8,26 +10,23 @@ import { Component } from '@angular/core';
   templateUrl: './confirmation.component.html'
 })
 
-/**
- * Defines an Order.
- */
-export class Order {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  products: Product[];
-}
-
-export class ConfirmationComponent {
+export class ConfirmationComponent implements OnInit {
 	// TODO: À compléter
-	// Vraiment pour tester hahaha
-	order: Order = {
-		id: 1,
-		firstName: 'Maxime',
-		lastName: 'Ouellette'
-	};
-  
-	constructor() { }
+	
+	constructor(private orderService: OrdersService) { }
+	 
+	firstName: string;
+	lastName: string;
+	orderId: number;
+	
+	ngOnInit() {
+	}
+	
+	getOrder(orderId: number): void {
+    this.orderService.getOrder(orderId)
+    .then(order => {
+      this.firstName = order.firstName;
+	  this.lastName = order.lastName;
+	  this.orderId = orderId;})
+  }
 }

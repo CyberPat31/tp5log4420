@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../products.service';
 import { Product } from '../products.service';
 
@@ -9,7 +9,7 @@ import { Product } from '../products.service';
   selector: 'products',
   templateUrl: './products.component.html'
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
   
   constructor(
   private productService: ProductsService) { }
@@ -32,6 +32,6 @@ export class ProductsComponent {
       this.products = products;
       this.savedCategory = category;
       this.savedCriteria = criteria;
-      this.productCount = products.length;)}
+      this.productCount = products.length;})
   }
 }
