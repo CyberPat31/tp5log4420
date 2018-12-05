@@ -12,14 +12,7 @@ import { Item } from '../shopping-cart.service';
   templateUrl: './shopping-cart.component.html'
 })
 
-/*export class ShoppingCartItem {
-  item: Item;
-  product: Product;
-}*/
-
 export class ShoppingCartComponent implements OnInit {
-//export class ShoppingCartComponent {
-  // TODO: À compléter
   constructor(
     private productService: ProductsService,
     private shoppingCartService: ShoppingCartService) { }
@@ -34,24 +27,13 @@ export class ShoppingCartComponent implements OnInit {
       this.getProducts();
       this.totalPrice = 0;
       this.updateTotalPrice();
-      /*for (let i of this.items){
-        for (let p of this.products){
-          if(i.productId == p.id){
-            let sci = new ShoppingCartItem();
-            sci.item = i;
-            sci.product = p;
-            this.shoppingCartItems.push(sci);
-            this.totalPrice = this.totalPrice + p.price;
-          }
-        }
-      }*/
     }
     
     getItems(): void {
       this.shoppingCartService.getItems()
       .then(items => {
-
         this.items = items;})
+        //debugger;
 
     }
     getProducts(): void {
@@ -60,7 +42,7 @@ export class ShoppingCartComponent implements OnInit {
         this.products = products;})
     }
 
-    getPrice(item: Item): number {
+    getItemPrice(item: Item): number {
       for (let p of this.products){
         if(item.productId == p.id){
           return p.price;
@@ -69,10 +51,20 @@ export class ShoppingCartComponent implements OnInit {
       return 0;
     }
 
+    getItemName(item: Item): string {
+      for (let p of this.products){
+        if(item.productId == p.id){
+          return p.name;
+        }
+      }
+      return "";
+    }
+
+
     updateTotalPrice(): void {
       this.totalPrice = 0;
       for (let i of this.items){
-        this.totalPrice = this.totalPrice + this.getPrice(i);
+        this.totalPrice = this.totalPrice + this.getItemPrice(i);
       }
     }
 

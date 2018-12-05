@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products.service';
 import { Product } from '../products.service';
+import { ShoppingCartService } from '../shopping-cart.service';
+import { Item } from '../shopping-cart.service';
 import {NgForm} from '@angular/forms';
 
 /**
@@ -20,9 +22,11 @@ export class ProductComponent implements OnInit {
    */
   constructor(
   private route: ActivatedRoute,
-  private productService: ProductsService) { }
+  private productService: ProductsService,
+  private shoppingCartService: ShoppingCartService) { }
 
   product: Product; 
+  quantity: number;
   displayDialog: boolean;
 
   /**
@@ -32,6 +36,7 @@ export class ProductComponent implements OnInit {
     const productId = this.route.snapshot.paramMap.get('id');
     this.getProduct(productId);
     this.displayDialog = false;
+    this.quantity = 1;
   }
 
   getProduct(productId: string): void {
@@ -39,7 +44,8 @@ export class ProductComponent implements OnInit {
   }
 
   submit= function(f: NgForm){
-  this.displayDialog = true;
-  setTimeout(()=> this.displayDialog = false, 5000);
+    this.shoppingCartService.addItem(this.product.id, this.quantity);
+    this.displayDialog = true;
+    setTimeout(()=> this.displayDialog = false, 5000);
   }
 }

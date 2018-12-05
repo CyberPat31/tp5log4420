@@ -1,6 +1,7 @@
 <article>
   <h1>Panier</h1>
-  <table class="table shopping-cart-table">
+  <p *ngIf="items.length == 0">Aucun produit dans le panier.</p>
+  <table class="table shopping-cart-table" *ngIf="items.length > 0">
     <thead>
     <tr>
       <th></th>
@@ -11,32 +12,32 @@
     </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let sci of shoppingCartItems">
+      <tr *ngFor="let i of items">
         <td>
-          <button (click)="removeItem(sci)" class="remove-item-button" title="Supprimer">
+          <button (click)="removeItem(i)" class="remove-item-button" title="Supprimer">
             <i class="fa fa-times"></i>
           </button>
         </td>
         <td>
-          <a routerLink="/produits/{{sci.product.id}}">{{sci.product.name}}</a>
+          <a routerLink="/produits/{{i.productId}}">{{getItemName(i)}}</a>
         </td>
-        <td>{{sci.product.price | number: '1.2-2':'fr'}}&thinsp;$</td>
+        <td>{{getItemPrice(i) | number: '1.2-2':'fr'}}&thinsp;$</td>
         <td>
           <div class="row">
             <div class="col">
-              <button (click)="decreaseItemCount(sci)" class="remove-quantity-button" title="Retirer" disabled><i class="fa fa-minus"></i></button>
+              <button (click)="decreaseItemCount(i)" class="remove-quantity-button" title="Retirer" disabled><i class="fa fa-minus"></i></button>
             </div>
-            <div class="col quantity">{{sci.item.quantity}}</div>
+            <div class="col quantity">{{i.quantity}}</div>
             <div class="col">
-              <button (click)="increaseItemCount(sci)" class="add-quantity-button" title="Ajouter"><i class="fa fa-plus"></i></button>
+              <button (click)="increaseItemCount(i)" class="add-quantity-button" title="Ajouter"><i class="fa fa-plus"></i></button>
             </div>
           </div>
         </td>
-        <td class="price">{{sci.product.price * sci.item.quantity | number:'1.2-2':'fr'}}&thinsp;$</td>
+        <td class="price">{{getItemPrice(i) * i.quantity | number:'1.2-2':'fr'}}&thinsp;$</td>
       </tr>
     </tbody>
   </table>
-  <p class="shopping-cart-total">Total: <strong id="total-amount">{{totalPrice | number: '1.2-2':'fr'}}&thinsp;$</strong></p>
-  <a class="btn pull-right" routerLink="/commande">Commander <i class="fa fa-angle-double-right"></i></a>
-  <button (click)="emptyCart()" class="btn" id="remove-all-items-button"><i class="fa fa-trash-o"></i>&nbsp; Vider le panier</button>
+  <p *ngIf="items.length > 0" class="shopping-cart-total">Total: <strong id="total-amount">{{totalPrice | number: '1.2-2':'fr'}}&thinsp;$</strong></p>
+  <a *ngIf="items.length > 0" class="btn pull-right" routerLink="/commande">Commander <i class="fa fa-angle-double-right"></i></a>
+  <button *ngIf="items.length > 0" (click)="emptyCart()" class="btn" id="remove-all-items-button"><i class="fa fa-trash-o"></i>&nbsp; Vider le panier</button>
 </article>
