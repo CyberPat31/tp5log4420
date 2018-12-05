@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../products.service';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { Product } from '../products.service';
@@ -12,12 +12,13 @@ import { Item } from '../shopping-cart.service';
   templateUrl: './shopping-cart.component.html'
 })
 
-class ShoppingCartItem {
+/*export class ShoppingCartItem {
   item: Item;
   product: Product;
-}
+}*/
 
-export class ShoppingCartComponent {
+export class ShoppingCartComponent implements OnInit {
+//export class ShoppingCartComponent {
   // TODO: À compléter
   constructor(
     private productService: ProductsService,
@@ -25,15 +26,15 @@ export class ShoppingCartComponent {
   
     items: Item[];
     products: Product[];
-    shoppingCartItems: ShoppingCartItem[];
     totalPrice: number;
   
     ngOnInit() {
+      this.items = [];
       this.getItems();
       this.getProducts();
-      this.shoppingCartItems = [];
       this.totalPrice = 0;
-      for (let i of this.items){
+      this.updateTotalPrice();
+      /*for (let i of this.items){
         for (let p of this.products){
           if(i.productId == p.id){
             let sci = new ShoppingCartItem();
@@ -43,12 +44,13 @@ export class ShoppingCartComponent {
             this.totalPrice = this.totalPrice + p.price;
           }
         }
-      }
+      }*/
     }
     
     getItems(): void {
       this.shoppingCartService.getItems()
       .then(items => {
+
         this.items = items;})
 
     }
@@ -56,46 +58,54 @@ export class ShoppingCartComponent {
       this.productService.getProducts()
       .then(products => {
         this.products = products;})
+    }
 
+    getPrice(item: Item): number {
+      for (let p of this.products){
+        if(item.productId == p.id){
+          return p.price;
+        }
+      }
+      return 0;
     }
 
     updateTotalPrice(): void {
       this.totalPrice = 0;
-      for (let i of this.shoppingCartItems){
-            this.totalPrice = this.totalPrice + i.product.price;
+      for (let i of this.items){
+        this.totalPrice = this.totalPrice + this.getPrice(i);
       }
     }
 
     emptyCart(): void {
-      this.shoppingCartItems = [];
+      this.items = [];
       this.totalPrice = 0;
       this.shoppingCartService.deleteAllItems();
     }
 
-    removeItem(item: ShoppingCartItem): void {
-      this.shoppingCartService.deleteItem(item.item.productId);
-      var index = this.shoppingCartItems.indexOf(item);
+    removeItem(item: Item): void {
+      this.shoppingCartService.deleteItem(item.productId);
+      var index = this.items.indexOf(item);
       if (index > -1) {
-        this.shoppingCartItems.splice(index, 1);
+        this.items.splice(index, 1);
       }
       this.updateTotalPrice();
     }
 
-    decreaseItemCount(item: ShoppingCartItem): void {
-      for (let i of this.shoppingCartItems){
-        if(i.item.productId == item.item.productId && i.item.quantity > 0){
-          i.item.quantity = i.item.quantity - 1;
-          this.shoppingCartService.updateItem(i.item.productId, i.item.quantity);
+    decreaseItemCount(item: Item): void {
+      for (let i of this.items){
+        if(i.productId == item.productId && i.quantity > 0){
+          i.quantity = i.quantity - 1;
+          this.shoppingCartService.updateItem(i.productId, i.quantity);
         }
       }
       this.updateTotalPrice();
     }
 
-    increaseItemCount(item: ShoppingCartItem): void {
-      for (let i of this.shoppingCartItems){
-        if(i.item.productId == item.item.productId){
-          i.item.quantity = i.item.quantity + 1;
-          this.shoppingCartService.updateItem(i.item.productId, i.item.quantity);
+    increaseItemCount(item: Item): void {
+      for (let i of this.items){
+        if(i.productId == item.productId){
+          i.quantity = i.quantity + 1;
+          this.shoppingCartService.updateItem(i.productId, i.quantity);
         }
       }
       this.updateTotalPrice();
