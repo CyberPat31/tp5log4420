@@ -1,15 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
+import { Item } from './shopping-cart.service';
 import { Config } from './config';
-
-/**
- * Defines a Product.
- */
-export class Product {
-  productId: number;
-  quantity: number;
-}
 
 /**
  * Defines an Order.
@@ -20,7 +12,7 @@ export class Order {
   lastName: string;
   email: string;
   phone: string;
-  products: Product[];
+  products: Item[];
 }
 
 @Injectable()
@@ -49,9 +41,7 @@ export class OrdersService {
    */
   getOrder(orderId: number): Promise<Order> {
     const url = `${Config.apiUrl}/orders/${orderId}`;
-	const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const options = { headers: headers, withCredentials: true };
-    return this.http.get(url, options)
+    return this.http.get(url)
       .toPromise()
       .then(order => order as Order)
       .catch(OrdersService.handleError);
@@ -60,18 +50,16 @@ export class OrdersService {
   /**
    * Adds the order to the database  
    */
-  addOrder(id: number, firstName: string, lastName: string, email: string, phone: string, products: Product[]): Promise<{}> {
+  addOrder(id: number, firstName: string, lastName: string, email: string, phone: string, products: Item[]): Promise<{}> {
     const url = `${Config.apiUrl}/orders/`;
-	const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const options = { headers: headers, withCredentials: true };
     return this.http.post(url, JSON.stringify({
       id: id,
       firstName: firstName,
-	  lastName: lastName,
+	    lastName: lastName,
       email: email,
-	  phone: phone,
+	    phone: phone,
       products: products
-    }), options)
+    }))
     .toPromise()
     .then()
     .catch(OrdersService.handleError);

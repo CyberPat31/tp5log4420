@@ -89,4 +89,26 @@ export class ShoppingCartService {
     .then()
     .catch(ShoppingCartService.handleError);
   }
+
+  deleteItem(productId: number): Promise<{}> {
+    const url = `${Config.apiUrl}/shopping-cart/${productId}`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const options = { headers: headers, withCredentials: true };
+    
+    return this.http.delete(url, options)
+    .toPromise()
+    .then()
+    .catch(ShoppingCartService.handleError);
+  }
+
+  deleteAllItems(): Promise<{}> {
+    const url = `${Config.apiUrl}/shopping-cart/`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const options = { headers: headers, withCredentials: true };
+    
+    return this.http.delete(url, options)
+    .toPromise()
+    .then()
+    .catch(ShoppingCartService.handleError);
+  }
 }

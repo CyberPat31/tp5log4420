@@ -20,6 +20,7 @@ export class ConfirmationComponent implements OnInit {
 	orderId: number;
 	
 	ngOnInit() {
+		this.getOrder(1);
 	}
 	
 	getOrder(orderId: number): void {

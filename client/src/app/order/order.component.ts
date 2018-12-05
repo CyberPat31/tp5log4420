@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { OrdersService } from '../orders.service';
+import { Order } from '../orders.service';
 declare const $: any;
 
 /**
@@ -11,6 +13,11 @@ declare const $: any;
 export class OrderComponent implements OnInit {
 
   orderForm: any;
+  order: Order;
+
+  constructor(private orderService: OrdersService) { }
+  
+  
 
   /**
    * Occurs when the component is initialized.
@@ -50,5 +57,10 @@ export class OrderComponent implements OnInit {
       return;
     }
     // TODO: Compléter la soumission des informations lorsque le formulaire soumis est valide.
+  	this.orderService.addOrder(1, this.order.firstName, this.order.lastName, this.order.email, this.order.phone, this.order.products);
+    /*.then(order => {
+      this.firstName = order.firstName;
+	  this.lastName = order.lastName;
+	  this.orderId = orderId;})*/
   }
 }
