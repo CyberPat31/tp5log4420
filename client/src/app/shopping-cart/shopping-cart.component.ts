@@ -26,7 +26,6 @@ export class ShoppingCartComponent implements OnInit {
       this.getItems();
       this.getProducts();
       this.totalPrice = 0;
-      this.updateTotalPrice();
     }
     
     getItems(): void {
@@ -61,11 +60,13 @@ export class ShoppingCartComponent implements OnInit {
     }
 
 
-    updateTotalPrice(): void {
-      this.totalPrice = 0;
+    getTotalPrice(): number {
+      var totalPrice = 0;
       for (let i of this.items){
-        this.totalPrice = this.totalPrice + this.getItemPrice(i);
+        totalPrice = totalPrice + this.getItemPrice(i) * i.quantity;
       }
+      //debugger;
+      return totalPrice;
     }
 
     emptyCart(): void {
@@ -74,23 +75,25 @@ export class ShoppingCartComponent implements OnInit {
       this.shoppingCartService.deleteAllItems();
     }
 
+    isItemQuantityLessThanOne(item: Item): boolean {
+      return (item.quantity < 1);
+    }
+
     removeItem(item: Item): void {
       this.shoppingCartService.deleteItem(item.productId);
       var index = this.items.indexOf(item);
       if (index > -1) {
         this.items.splice(index, 1);
       }
-      this.updateTotalPrice();
     }
 
     decreaseItemCount(item: Item): void {
       for (let i of this.items){
-        if(i.productId == item.productId && i.quantity > 0){
+        if(i.productId == item.productId){
           i.quantity = i.quantity - 1;
           this.shoppingCartService.updateItem(i.productId, i.quantity);
         }
       }
-      this.updateTotalPrice();
     }
 
     increaseItemCount(item: Item): void {
@@ -100,6 +103,5 @@ export class ShoppingCartComponent implements OnInit {
           this.shoppingCartService.updateItem(i.productId, i.quantity);
         }
       }
-      this.updateTotalPrice();
     }
 }

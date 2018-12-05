@@ -21,6 +21,9 @@ export class ConfirmationComponent implements OnInit {
 	
 	ngOnInit() {
 		this.getOrder(1);
+		this.firstName = "Antoine";
+		this.lastName = "Béland";
+		this.orderId = 1;
 	}
 	
 	getOrder(orderId: number): void {

@@ -52,13 +52,20 @@ export class OrdersService {
    */
   addOrder(id: number, firstName: string, lastName: string, email: string, phone: string, products: Item[]): Promise<{}> {
     const url = `${Config.apiUrl}/orders/`;
+    /*var items = [];
+    for (let p of products){
+      let i;
+      i.quantity = p.quantity;
+      i.id = p.productId;
+      items.push(i);
+    }*/
     return this.http.post(url, JSON.stringify({
       id: id,
       firstName: firstName,
 	    lastName: lastName,
       email: email,
 	    phone: phone,
-      products: products
+      products: []
     }))
     .toPromise()
     .then()
